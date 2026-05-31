@@ -20,9 +20,20 @@
 FROM maven:3.9.10-eclipse-temurin-21 AS build
 WORKDIR /workspace
 
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        fontconfig \
+        fonts-dejavu-core \
+        fonts-liberation2 \
+        fonts-noto-core \
+        fonts-noto-extra \
+    && fc-cache -f \
+    && rm -rf /var/lib/apt/lists/*
+
 COPY pom.xml .
 RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp dependency:go-offline
 
+COPY config ./config
 COPY src ./src
 RUN --mount=type=cache,target=/root/.m2 mvn -B -ntp package
 
@@ -43,7 +54,6 @@ RUN apt-get update \
         fonts-liberation2 \
         fonts-noto-core \
         fonts-noto-extra \
-        fonts-noto-cjk \
     && fc-cache -f \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --system origam \

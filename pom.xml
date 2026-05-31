@@ -60,6 +60,11 @@ along with ORIGAM. If not, see <http://www.gnu.org/licenses/>.
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.2</version>
+                <configuration>
+                    <systemPropertyVariables>
+                        <java.util.logging.config.file>config/logging.properties</java.util.logging.config.file>
+                    </systemPropertyVariables>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

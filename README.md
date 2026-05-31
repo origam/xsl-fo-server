@@ -70,10 +70,11 @@ fonts-dejavu-core
 fonts-liberation2
 fonts-noto-core
 fonts-noto-extra
-fonts-noto-cjk
 ```
 
 This gives broad Noto coverage plus practical office-document fallbacks. Add report-specific corporate fonts through a custom image layer or a mounted FOP configuration.
+
+The bundled FOP configuration explicitly registers known FOP-loadable TrueType fonts for Latin, Greek, Cyrillic, Arabic, Hebrew, Devanagari, symbols, and Arial-compatible fallback text. CJK fonts are not included by default because Ubuntu's Noto CJK package provides `.ttc` collections that this FOP stack does not load reliably. For production CJK reports, add FOP-compatible CJK font files through a custom image layer and register them in `config/fop.xconf`.
 
 ## ORIGAM Integration Shape
 

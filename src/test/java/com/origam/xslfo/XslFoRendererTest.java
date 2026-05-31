@@ -22,7 +22,9 @@ package com.origam.xslfo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
 import org.junit.jupiter.api.Test;
@@ -46,19 +48,37 @@ class XslFoRendererTest {
 
     @Test
     void rendersMinimalFoToPdf() throws Exception {
-        AppConfig config = new AppConfig(
+        XslFoRenderer renderer = XslFoRenderer.create(testConfig(null));
+
+        RenderResult result = renderer.render(MINIMAL_FO.getBytes(StandardCharsets.UTF_8));
+
+        assertValidOnePagePdf(result);
+    }
+
+    @Test
+    void rendersMultilingualFoWithConfiguredFonts() throws Exception {
+        Path configFile = Path.of("config/fop.xconf").toAbsolutePath().normalize();
+        XslFoRenderer renderer = XslFoRenderer.create(testConfig(configFile));
+        byte[] xslFo = Files.readAllBytes(Path.of("src/test/resources/multilingual.fo"));
+
+        RenderResult result = renderer.render(xslFo);
+
+        assertValidOnePagePdf(result);
+    }
+
+    private static AppConfig testConfig(Path fopConfigFile) {
+        return new AppConfig(
                 "127.0.0.1",
                 8080,
                 1,
                 1024 * 1024,
                 Duration.ofSeconds(5),
                 Path.of(".").toAbsolutePath().normalize().toUri(),
-                null,
+                fopConfigFile,
                 false);
-        XslFoRenderer renderer = XslFoRenderer.create(config);
+    }
 
-        RenderResult result = renderer.render(MINIMAL_FO.getBytes(StandardCharsets.UTF_8));
-
+    private static void assertValidOnePagePdf(RenderResult result) throws IOException {
         assertEquals(1, result.pageCount());
         assertTrue(result.pdf().length > 100);
         assertEquals("%PDF", new String(result.pdf(), 0, 4, StandardCharsets.US_ASCII));
