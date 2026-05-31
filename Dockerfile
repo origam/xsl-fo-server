@@ -34,10 +34,17 @@ ENV APP_PORT=8080 \
     MAX_REQUEST_BYTES=20971520 \
     RENDER_TIMEOUT_SECONDS=60 \
     WARMUP_ENABLED=true \
-    JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
+    JAVA_TOOL_OPTIONS="-Djava.awt.headless=true -Djava.util.logging.config.file=/app/config/logging.properties -XX:+UseContainerSupport -XX:MaxRAMPercentage=75.0"
 
 RUN apt-get update \
-    && apt-get install -y --no-install-recommends fontconfig fonts-dejavu-core \
+    && apt-get install -y --no-install-recommends \
+        fontconfig \
+        fonts-dejavu-core \
+        fonts-liberation2 \
+        fonts-noto-core \
+        fonts-noto-extra \
+        fonts-noto-cjk \
+    && fc-cache -f \
     && rm -rf /var/lib/apt/lists/* \
     && groupadd --system origam \
     && useradd --system --gid origam --home-dir /app origam \
@@ -47,6 +54,7 @@ RUN apt-get update \
 WORKDIR /app
 COPY --from=build /workspace/target/xsl-fo-server-*-shaded.jar /app/xsl-fo-server.jar
 COPY config/fop.xconf /app/config/fop.xconf
+COPY config/logging.properties /app/config/logging.properties
 
 USER origam
 EXPOSE 8080

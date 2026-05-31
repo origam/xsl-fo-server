@@ -60,6 +60,21 @@ The compose file exposes the renderer on `http://localhost:8080`. Mount report i
 | `FOP_BASE_URI` | current working directory locally, `/app/work/` in Docker | Base URI for relative resources. |
 | `FOP_CONFIG_FILE` | unset locally, `/app/config/fop.xconf` in Docker | Apache FOP configuration file. |
 
+## Included Fonts
+
+The Docker image includes this default international font pack:
+
+```text
+fontconfig
+fonts-dejavu-core
+fonts-liberation2
+fonts-noto-core
+fonts-noto-extra
+fonts-noto-cjk
+```
+
+This gives broad Noto coverage plus practical office-document fallbacks. Add report-specific corporate fonts through a custom image layer or a mounted FOP configuration.
+
 ## ORIGAM Integration Shape
 
 The prototype currently writes XSL-FO to a temp file and shells out to `fop`. With this service, keep the existing ORIGAM report lookup, default parameter population, data loading, and XSLT transformation. Replace only the `RenderPdfWithFop(...)` section with an HTTP call:
