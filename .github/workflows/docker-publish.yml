@@ -25,6 +25,8 @@ jobs:
         uses: docker/metadata-action@v5
         with:
           images: ${{ vars.DOCKERHUB_NAMESPACE }}/xsl-fo-server
+          flavor: |
+            latest=false
           tags: |
             type=raw,value=master-latest.linux,enable=${{ github.ref == 'refs/heads/master' }}
             type=match,pattern=v(.*),group=1,suffix=.linux,enable=${{ startsWith(github.ref, 'refs/tags/v') }}
