@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Log in to Docker Hub
         uses: docker/login-action@v4
@@ -24,7 +24,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ vars.DOCKERHUB_NAMESPACE }}/origam-xsl-fo
+          images: ${{ vars.DOCKERHUB_NAMESPACE }}/xsl-fo-server
           tags: |
             type=raw,value=master-latest,enable=${{ github.ref == 'refs/heads/master' }}
             type=ref,event=tag
