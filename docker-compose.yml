@@ -1,0 +1,16 @@
+services:
+  xslfo:
+    build: .
+    image: origam/xsl-fo-server:local
+    ports:
+      - "8080:8080"
+    environment:
+      APP_PORT: "8080"
+      FOP_BASE_URI: "file:/app/work/"
+      FOP_CONFIG_FILE: "/app/config/fop.xconf"
+      MAX_REQUEST_BYTES: "20971520"
+      RENDER_TIMEOUT_SECONDS: "60"
+      WARMUP_ENABLED: "true"
+    volumes:
+      - ./config/fop.xconf:/app/config/fop.xconf:ro
+      - ./examples:/app/work:ro

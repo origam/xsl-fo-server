@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<fop version="1.0">
+  <strict-validation>true</strict-validation>
+  <strict-configuration>true</strict-configuration>
+  <renderers>
+    <renderer mime="application/pdf">
+      <fonts>
+        <auto-detect/>
+      </fonts>
+    </renderer>
+  </renderers>
+</fop>

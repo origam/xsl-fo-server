@@ -1,0 +1,7 @@
+target/
+*.class
+*.jar
+*.pdf
+.DS_Store
+.idea/
+.vscode/
